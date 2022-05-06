@@ -8,11 +8,12 @@ Aplicação de um widget de feedback para inserir em qualquer site.
 
 -- Front-end:
 ReactJS,
-Vite,
 TailWindCSS,
+Vite,
+Axios
 
 -- Back-end:
 NodeJS,
 Prisma,
-NodeMailer
+Nodemailer
 
