@@ -5,6 +5,8 @@ import { CloseButton } from "../widget/CloseButton";
 
 import { ScreenShotButton } from "../ScreenShotButton";
 import { FeedbackType, feedbackTypes } from "../widget/WidgetForm";
+import { api } from "../../services/api/api";
+import { Loading } from "../Loading";
 
 interface FeedbackContentStepProps {
   feedbackType: FeedbackType;
@@ -17,13 +19,23 @@ export function FeedbackContentStep({
   onFeedbackRestartRequested,
   onFeedbackSent,
 }: FeedbackContentStepProps) {
-  const [screnShot, setScreenShot] = useState<string | null>(null);
+  const [screenshot, setScreenshot] = useState<string | null>(null);
   const [comment, setComment] = useState("");
+  const [isSendFeedback, setIsSendFeedback] = useState(false);
 
   const feedbackTypeInfo = feedbackTypes[feedbackType];
 
-  function handleSubmitFeedback(e: FormEvent) {
+  async function handleSubmitFeedback(e: FormEvent) {
     e.preventDefault();
+    setIsSendFeedback(true);
+    await api.post("/feedbacks", {
+      type: feedbackType,
+      comment,
+      screenshot,
+    });
+
+    setIsSendFeedback(false);
+
     onFeedbackSent();
   }
 
@@ -57,15 +69,15 @@ export function FeedbackContentStep({
         />
         <footer className="flex gap-2 mt-2">
           <ScreenShotButton
-            screenShot={screnShot}
-            onScreenShotTook={setScreenShot}
+            screenShot={screenshot}
+            onScreenShotTook={setScreenshot}
           />
           <button
-            disabled={comment.length === 0}
+            disabled={comment.length === 0 || isSendFeedback}
             type="submit"
             className="p-2 bg-brand-500 rounded-md border-transparent flex-1 flex justify-center items-center text-sm hover:bg-brand-300 focus:outline-none  focus:ring-2  focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-brand-500 transition-colors disabled:opacity-50  disabled:hover:bg-brand-500"
           >
-            Enviar Feedback
+            {isSendFeedback ? <Loading /> : "Enviar Feedback"}
           </button>
         </footer>
       </form>
