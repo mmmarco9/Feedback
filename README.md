@@ -6,10 +6,10 @@ Aplicação de um widget de feedback para inserir em qualquer site.
 
 🔧 Tecnologias :
 
-Vite
-TailWindCSS
-ReactJS
-NodeJS
-Prisma
+Vite,
+TailWindCSS,
+ReactJS,
+NodeJS,
+Prisma,
 NodeMailer
 
